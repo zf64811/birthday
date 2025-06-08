@@ -2,96 +2,132 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>生日快乐，淼淼！</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>生日快乐，小淼淼！</title>
   <style>
-    body {
-      margin: 0;
-      padding: 0;
-      background: linear-gradient(to bottom, #ffdde1, #ee9ca7);
-      height: 100vh;
+    body, html {
+      margin: 0; padding: 0;
+      height: 100%;
+      font-family: 'Comic Sans MS', cursive;
       overflow: hidden;
+      background: url('https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1470&q=80') no-repeat center center/cover;
       display: flex;
       justify-content: center;
       align-items: center;
-      font-family: 'Comic Sans MS', cursive;
     }
-
+    .overlay {
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background-color: rgba(255, 221, 225, 0.7);
+      z-index: 1;
+    }
     .card {
+      position: relative;
       background: white;
-      padding: 30px;
+      padding: 30px 40px;
       border-radius: 20px;
       box-shadow: 0 0 15px rgba(0,0,0,0.2);
       text-align: center;
-      position: relative;
-      max-width: 90%;
+      max-width: 90vw;
+      max-height: 80vh;
+      overflow: hidden;
+      z-index: 2;
+      width: 400px;
     }
-
-    .card h1 {
+    h1 {
       color: #e91e63;
       font-size: 2em;
+      margin-bottom: 0.2em;
     }
-
-    .card p {
-      font-size: 1.2em;
+    #message {
+      font-size: 1.3em;
       color: #333;
-      margin: 20px 0;
+      min-height: 4.2em;
+      line-height: 1.4em;
+      transition: opacity 1s ease;
+      opacity: 1;
     }
-
-    .heart {
-      position: absolute;
-      color: red;
-      animation: fall 5s linear infinite;
-    }
-
-    @keyframes fall {
-      0% {
-        transform: translateY(-100px);
-        opacity: 1;
-      }
-      100% {
-        transform: translateY(100vh);
-        opacity: 0;
-      }
-    }
-
     .button {
+      margin-top: 25px;
       background: #e91e63;
       color: white;
-      padding: 10px 20px;
+      padding: 12px 25px;
       border: none;
       border-radius: 10px;
       cursor: pointer;
-      font-size: 1em;
+      font-size: 1.1em;
+      user-select: none;
+      transition: background-color 0.3s ease;
+    }
+    .button:hover {
+      background: #c2185b;
+    }
+    .heart {
+      position: absolute;
+      color: red;
+      font-size: 16px;
+      animation: fall 5s linear infinite;
+      user-select: none;
+      pointer-events: none;
+      z-index: 3;
+    }
+    @keyframes fall {
+      0% {transform: translateY(-100px);opacity: 1;}
+      100% {transform: translateY(100vh);opacity: 0;}
     }
   </style>
 </head>
 <body>
+  <div class="overlay"></div>
   <div class="card">
     <h1>🎂 生日快乐，小淼淼！ 🎉</h1>
-    <p>你是宇宙送给我的特别礼物，<br>愿你笑容灿烂如初，快乐如影随形。<br>今天你是我永远的小公主！👑</p>
+    <div id="message">你是宇宙送给我的特别礼物，愿你笑容灿烂如初，快乐如影随形。</div>
     <button class="button" onclick="showFireworks()">点我一下🎆</button>
   </div>
 
-  <audio id="bgm" src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3"></audio>
+  <audio id="bgm" src="https://cdn.pixabay.com/download/audio/2022/03/01/audio_2a5c30edeb.mp3?filename=happy-birthday-6285.mp3" preload="auto"></audio>
 
   <script>
-    // 爱心雨
+    // 爱心雨效果
     function createHeart() {
       const heart = document.createElement('div');
       heart.classList.add('heart');
       heart.textContent = '❤️';
       heart.style.left = Math.random() * 100 + 'vw';
       heart.style.fontSize = (Math.random() * 20 + 10) + 'px';
+      heart.style.animationDuration = (Math.random() * 3 + 4) + 's';
       document.body.appendChild(heart);
-      setTimeout(() => heart.remove(), 5000);
+      setTimeout(() => heart.remove(), 7000);
     }
     setInterval(createHeart, 300);
 
-    // 烟花效果
+    // 祝福语数组
+    const messages = [
+      '你是宇宙送给我的特别礼物，愿你笑容灿烂如初，快乐如影随形。',
+      '愿你每天都有甜甜的笑容，幸福满满。',
+      '感谢遇见你，让我的世界温暖如春。',
+      '今天你是我永远的小公主，爱你永不变！👑',
+      '愿未来的每一年，我们携手共进，共度美好时光。'
+    ];
+    let msgIndex = 0;
+    const msgDiv = document.getElementById('message');
+
+    function cycleMessages() {
+      msgDiv.style.opacity = 0;
+      setTimeout(() => {
+        msgIndex = (msgIndex + 1) % messages.length;
+        msgDiv.textContent = messages[msgIndex];
+        msgDiv.style.opacity = 1;
+      }, 1000);
+    }
+    setInterval(cycleMessages, 6000);
+
+    // 烟花效果弹窗+音乐播放
     function showFireworks() {
       alert("✨ BOOM! 烟花绽放啦！爱你的小淼淼，在我心里永远最亮的那颗星～ 🎇");
-      document.getElementById('bgm').play();
+      const bgm = document.getElementById('bgm');
+      bgm.volume = 0.5;
+      bgm.play();
     }
   </script>
 </body>
