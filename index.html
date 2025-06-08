@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>生日快乐，淼淼！</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(to bottom, #ffdde1, #ee9ca7);
+      height: 100vh;
+      overflow: hidden;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-family: 'Comic Sans MS', cursive;
+    }
+
+    .card {
+      background: white;
+      padding: 30px;
+      border-radius: 20px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.2);
+      text-align: center;
+      position: relative;
+      max-width: 90%;
+    }
+
+    .card h1 {
+      color: #e91e63;
+      font-size: 2em;
+    }
+
+    .card p {
+      font-size: 1.2em;
+      color: #333;
+      margin: 20px 0;
+    }
+
+    .heart {
+      position: absolute;
+      color: red;
+      animation: fall 5s linear infinite;
+    }
+
+    @keyframes fall {
+      0% {
+        transform: translateY(-100px);
+        opacity: 1;
+      }
+      100% {
+        transform: translateY(100vh);
+        opacity: 0;
+      }
+    }
+
+    .button {
+      background: #e91e63;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      font-size: 1em;
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1>🎂 生日快乐，小淼淼！ 🎉</h1>
+    <p>你是宇宙送给我的特别礼物，<br>愿你笑容灿烂如初，快乐如影随形。<br>今天你是我永远的小公主！👑</p>
+    <button class="button" onclick="showFireworks()">点我一下🎆</button>
+  </div>
+
+  <audio id="bgm" src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3"></audio>
+
+  <script>
+    // 爱心雨
+    function createHeart() {
+      const heart = document.createElement('div');
+      heart.classList.add('heart');
+      heart.textContent = '❤️';
+      heart.style.left = Math.random() * 100 + 'vw';
+      heart.style.fontSize = (Math.random() * 20 + 10) + 'px';
+      document.body.appendChild(heart);
+      setTimeout(() => heart.remove(), 5000);
+    }
+    setInterval(createHeart, 300);
+
+    // 烟花效果
+    function showFireworks() {
+      alert("✨ BOOM! 烟花绽放啦！爱你的小淼淼，在我心里永远最亮的那颗星～ 🎇");
+      document.getElementById('bgm').play();
+    }
+  </script>
+</body>
+</html>
