@@ -590,6 +590,14 @@
         </div>
     </div>
 
+     <!-- 音频元素 -->
+    <audio id="arsenalSong">
+        <!-- 在这里替换为您的本地MP3文件路径 -->
+        <!-- 示例: <source src="arsenal_song.mp3" type="audio/mpeg"> -->
+        <source src="Hi-Res.m4a" type="audio/mpeg">
+        您的浏览器不支持音频元素。
+    </audio>
+    
     <script>
         // 页面元素
         const page1 = document.getElementById('page1');
@@ -603,6 +611,16 @@
         const closePhotos = document.getElementById('closePhotos');
         const wishes = document.querySelectorAll('.wish');
         const fallingHeartsContainer = document.getElementById('fallingHearts');
+        const arsenalSong = document.getElementById('arsenalSong');
+        const musicControl = document.getElementById('musicControl');
+
+        // 照片轮播变量
+        let photoInterval = null;
+        let currentPhoto = 0;
+        const photos = document.querySelectorAll('.photo');
+        
+        // 音乐播放状态
+        let isPlaying = false;
         
         // 创建持续掉落的爱心背景
         function createFallingHearts() {
@@ -656,10 +674,29 @@
                 wishes[currentWish].classList.add('active');
             }, 3000);
         }
-        
-        // 显示歌词
+       // 显示歌词并播放音乐
         lyricsBtn.addEventListener('click', () => {
-            lyricsContainer.classList.toggle('show');
+            // 显示歌词
+            lyricsContainer.classList.add('show');
+            
+            // 播放音乐
+            if (arsenalSong.paused) {
+                arsenalSong.play();
+                musicControl.innerHTML = '<i class="fas fa-pause"></i>';
+                isPlaying = true;
+            }
+        });
+        
+        // 音乐控制按钮
+        musicControl.addEventListener('click', () => {
+            if (isPlaying) {
+                arsenalSong.pause();
+                musicControl.innerHTML = '<i class="fas fa-play"></i>';
+            } else {
+                arsenalSong.play();
+                musicControl.innerHTML = '<i class="fas fa-pause"></i>';
+            }
+            isPlaying = !isPlaying;
         });
         
         // 爱心掉落效果
@@ -712,21 +749,35 @@
             }
         }
         
-        // 照片轮播
-        let currentPhoto = 0;
-        const photos = document.querySelectorAll('.photo');
-        
+       // 照片轮播
         function startPhotoSlideshow() {
-            setInterval(() => {
+            // 清除现有定时器
+            if (photoInterval) {
+                clearInterval(photoInterval);
+            }
+            
+            // 设置新定时器
+            photoInterval = setInterval(() => {
                 photos[currentPhoto].classList.remove('active');
                 currentPhoto = (currentPhoto + 1) % photos.length;
                 photos[currentPhoto].classList.add('active');
-            }, 5000);
+            }, 3000);
         }
         
         // 关闭照片展示
         closePhotos.addEventListener('click', () => {
             photosContainer.classList.remove('show');
+            // 清除照片轮播定时器
+            if (photoInterval) {
+                clearInterval(photoInterval);
+                photoInterval = null;
+            }
+        });
+        
+        // 歌曲结束事件
+        arsenalSong.addEventListener('ended', () => {
+            isPlaying = false;
+            musicControl.innerHTML = '<i class="fas fa-play"></i>';
         });
     </script>
 </body>
