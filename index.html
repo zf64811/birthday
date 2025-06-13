@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>银杏叶专属网站hhh</title>
+    <title>高级生日贺卡 - 给你的专属惊喜</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         * {
@@ -226,9 +226,10 @@
         .buttons-container {
             display: flex;
             justify-content: center;
-            gap: 20px;
+            gap: 15px;
             margin: 20px 0;
             width: 100%;
+            flex-wrap: wrap;
         }
         
         .btn {
@@ -277,6 +278,14 @@
             transform: translateY(1px);
         }
         
+        .btn.music-btn {
+            background: linear-gradient(45deg, #6b8cff, #8eaeff);
+        }
+        
+        .btn.music-btn:hover {
+            box-shadow: 0 8px 20px rgba(107, 140, 255, 0.6);
+        }
+        
         .lyrics-container {
             width: 100%;
             background: rgba(255, 245, 245, 0.8);
@@ -288,6 +297,7 @@
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
             display: none;
             border: 1px solid rgba(255, 200, 200, 0.4);
+            position: relative;
         }
         
         .lyrics-container.show {
@@ -302,6 +312,7 @@
             font-family: 'Dancing Script', cursive;
             font-size: 1.3rem;
             font-weight: 500;
+            padding: 0 20px;
         }
         
         .lyrics p {
@@ -318,6 +329,29 @@
             transform: translateX(-50%);
             color: #ff6b6b;
             opacity: 0.6;
+        }
+        
+        .music-control {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: rgba(107, 140, 255, 0.2);
+            border: none;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            color: #6b8cff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            z-index: 10;
+        }
+        
+        .music-control:hover {
+            background: rgba(107, 140, 255, 0.4);
+            transform: scale(1.1);
         }
         
         .hearts-container {
@@ -555,15 +589,18 @@
             </div>
             
             <div class="buttons-container">
-                <button class="btn" id="lyricsBtn">
-                    <i class="fas fa-music"></i> 阿森纳之歌
-                </button>
                 <button class="btn" id="heartsBtn">
-                    <i class="fas fa-heart"></i> Surprise !!!
+                    <i class="fas fa-heart"></i> Surprise
+                </button>
+                <button class="btn music-btn" id="lyricsBtn">
+                    <i class="fas fa-music"></i> 阿森纳之歌
                 </button>
             </div>
             
             <div class="lyrics-container" id="lyricsContainer">
+                <button class="music-control" id="musicControl">
+                    <i class="fas fa-play"></i>
+                </button>
                 <div class="lyrics">
                     <p>我们阿森纳是不可战胜的！</p>
                     <p>无论风雨，无论对手</p>
@@ -589,15 +626,15 @@
             <div class="photo" style="background-image: url('images/photo3.jpg')"></div>
         </div>
     </div>
-
-     <!-- 音频元素 -->
+    
+    <!-- 音频元素 -->
     <audio id="arsenalSong">
         <!-- 在这里替换为您的本地MP3文件路径 -->
         <!-- 示例: <source src="arsenal_song.mp3" type="audio/mpeg"> -->
         <source src="Hi-Res.m4a" type="audio/mpeg">
         您的浏览器不支持音频元素。
     </audio>
-    
+
     <script>
         // 页面元素
         const page1 = document.getElementById('page1');
@@ -613,7 +650,7 @@
         const fallingHeartsContainer = document.getElementById('fallingHearts');
         const arsenalSong = document.getElementById('arsenalSong');
         const musicControl = document.getElementById('musicControl');
-
+        
         // 照片轮播变量
         let photoInterval = null;
         let currentPhoto = 0;
@@ -674,7 +711,8 @@
                 wishes[currentWish].classList.add('active');
             }, 3000);
         }
-       // 显示歌词并播放音乐
+        
+        // 显示歌词并播放音乐
         lyricsBtn.addEventListener('click', () => {
             // 显示歌词
             lyricsContainer.classList.add('show');
@@ -735,10 +773,6 @@
                     const duration = Math.random() * 5 + 3;
                     heart.style.animationDuration = `${duration}s`;
                     
-                    // 随机旋转方向
-                    const rotation = Math.random() > 0.5 ? 360 : -360;
-                    heart.style.setProperty('--rotation', `${rotation}deg`);
-                    
                     heartsContainer.appendChild(heart);
                     
                     // 动画结束后移除爱心
@@ -749,7 +783,7 @@
             }
         }
         
-       // 照片轮播
+        // 照片轮播
         function startPhotoSlideshow() {
             // 清除现有定时器
             if (photoInterval) {
